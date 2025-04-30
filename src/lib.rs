@@ -3,9 +3,6 @@
 
 use std::error::Error;
 
-#[cfg(all(target_os = "unknown", target_arch = "wasm32"))]
-use wasm_bindgen::prelude::wasm_bindgen;
-
 mod aaudio;
 mod alsa;
 mod coreaudio;
@@ -53,7 +50,7 @@ trait AudioOutputDevice: BaseAudioOutputDevice {
 }
 
 /// An opaque "handle" to platform-dependent audio output device.
-#[cfg_attr(all(target_os = "unknown", target_arch = "wasm32"), wasm_bindgen)]
+#[cfg(all(target_os = "unknown", target_arch = "wasm32"))]
 pub struct OutputDevice {
     device: Option<Box<dyn BaseAudioOutputDevice>>,
 }
@@ -66,7 +63,7 @@ impl OutputDevice {
     }
 }
 
-#[cfg_attr(all(target_os = "unknown", target_arch = "wasm32"), wasm_bindgen)]
+#[cfg(all(target_os = "unknown", target_arch = "wasm32"))]
 impl OutputDevice {
     /// Closes the output device and release all system resources occupied by it. Any calls of this
     /// method after the device was closed does nothing.

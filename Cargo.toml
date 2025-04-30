@@ -35,23 +35,6 @@ ndk = { version = "0.9.0", default-features = false, features = ["audio", "api-l
 winapi = { version = "0.3.9", features = ["minwindef", "winnt", "windef", "winuser", "dsound", "synchapi", "winbase"] }
 
 [target.'cfg(all(target_os = "unknown", target_arch = "wasm32"))'.dependencies]
-js-sys = "0.3.61"
-wasm-bindgen = "0.2.84"
-wasm-bindgen-futures = "0.4.34"
-
-[target.'cfg(all(target_os = "unknown", target_arch = "wasm32"))'.dependencies.web-sys]
-version = "0.3.61"
-features = [
-    "Request",
-    "Window",
-    "Response",
-    "AudioContext",
-    "AudioBuffer",
-    "AudioContextOptions",
-    "AudioNode",
-    "AudioBufferSourceNode",
-    "AudioDestinationNode"
-]
 
 [target.'cfg(target_os = "linux")'.dependencies]
 alsa-sys = { version = "0.3.1" }
