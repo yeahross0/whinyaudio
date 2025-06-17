@@ -2,8 +2,8 @@
 
 Fork of TinyAudio with the wasm_bindgen dependency removed.
 This is less reliable than the original TinyAudio.
-Unlike TinyAudio it can't open multiple AudioContexts at once.
-Not ready for serious use but can be extended.
+Unlike TinyAudio it can't open multiple AudioContexts at once (on web).
+Not ready for serious use but could be reworked.
 
 # Original README: TinyAudio
 
