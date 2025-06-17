@@ -50,7 +50,7 @@ trait AudioOutputDevice: BaseAudioOutputDevice {
 }
 
 /// An opaque "handle" to platform-dependent audio output device.
-#[cfg(all(target_os = "unknown", target_arch = "wasm32"))]
+//#[cfg(all(target_os = "unknown", target_arch = "wasm32"))]
 pub struct OutputDevice {
     device: Option<Box<dyn BaseAudioOutputDevice>>,
 }
@@ -63,7 +63,6 @@ impl OutputDevice {
     }
 }
 
-#[cfg(all(target_os = "unknown", target_arch = "wasm32"))]
 impl OutputDevice {
     /// Closes the output device and release all system resources occupied by it. Any calls of this
     /// method after the device was closed does nothing.

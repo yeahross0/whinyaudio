@@ -15,37 +15,35 @@ let init_audio_output = function (sampleRate, channelCount, channelSampleCount) 
     return -1;
   }
 
-  let bufferDurationSecs = channelSampleCount / sampleRate; 
+  let audioBuffer;
+  try {
+    audioBuffer = audioContext.createBuffer(
+      channelCount,
+      channelSampleCount,
+      sampleRate,
+    );
+  } catch (e) {
+    return -2
+  }
+
+  let bufferDurationSecs = channelSampleCount / sampleRate;
   let timeStepMs = bufferDurationSecs * 1000;
   let offsetMs = 0;
 
   for (let _i = 0; _i < 2; _i++) {
-
-    let audioBuffer;
-    try {
-      audioBuffer = audioContext.createBuffer(
-        channelCount,
-        channelSampleCount,
-        sampleRate,
-      );
-    } catch (e) {
-      return -2
-    }
-
     let closure = () => {
       let currentTime = audioContext.currentTime;
       let startTime = rawTime >= currentTime ? rawTime : currentTime;
 
       let ptr = wasm_exports.write_samples();
-      let samples = new Float32Array(wasm_memory.buffer, ptr, channelSampleCount);
+      let samples = new Float32Array(wasm_memory.buffer, ptr, channelSampleCount * channelCount);
 
-      let channelCount = audioBuffer.numberOfChannels;
       for (let channel = 0; channel < channelCount; channel++) {
-        const nowBuffering = audioBuffer.getChannelData(channel);
-  
-        for (let i = channel; i < audioBuffer.length; i += channelCount) {
-          nowBuffering[i] = samples[i];
+        let tempSamples = []
+        for (let i = channel; i < samples.length; i += channelCount) {
+          tempSamples.push(samples[i]);
         }
+        audioBuffer.copyToChannel(Float32Array.from(tempSamples), channel);
       }
 
       const source = audioContext.createBufferSource();
@@ -72,8 +70,9 @@ let close_audio_output = () => {
 }
 
 miniquad_add_plugin({
-    register_plugin: function (importObject) {
-        importObject.env.init_audio_output = init_audio_output;
-        importObject.env.close_audio_output = close_audio_output;
- }, version: 1, name: "whinyaudio" });
+  register_plugin: function (importObject) {
+    importObject.env.init_audio_output = init_audio_output;
+    importObject.env.close_audio_output = close_audio_output;
+  }, version: 1, name: "whinyaudio"
+});
 

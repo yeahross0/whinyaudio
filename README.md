@@ -1,4 +1,11 @@
-# TinyAudio
+# WhinyAudio
+
+Fork of TinyAudio with the wasm_bindgen dependency removed.
+This is less reliable than the original TinyAudio.
+Unlike TinyAudio it can't open multiple AudioContexts at once.
+Not ready for serious use but can be extended.
+
+# Original README: TinyAudio
 
 TinyAudio is a cross-platform audio output library. Its main goal to provide unified access to
 a default sound output device of your operating system as easy as possible, covering as many platforms
